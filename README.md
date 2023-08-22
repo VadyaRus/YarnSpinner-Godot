@@ -6,9 +6,10 @@ This is meant to be used as a git submodule. The entire contents of this reposit
 
 It is suggested to add this library as a git submodule.
 
-Inside the `addons` folder (create one in the root of your project if it doesnt exist), run:
+To clone the submodule inside of the addons folder run:
 ```
-git submodule add https://github.com/VadyaRus/YarnSpinner-Godot.git
+mkdir addons
+git submodule add https://github.com/VadyaRus/YarnSpinner-Godot.git addons/YarnSpinner-Godot
 ```
 
 This will clone the plugin repo inside your addons folder.
