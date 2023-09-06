@@ -6,7 +6,7 @@ namespace Yarn.GodotYarn.Editor {
         private MenuButton _menuBar = new MenuButton();
 
         public LocalizationPopupEditorProperty() {
-            foreach(var c in Cultures.GetCultures()) {
+            foreach (var c in Cultures.GetCultures()) {
                 _menuBar.GetPopup().AddItem($"{c.DisplayName}:({c.Name})");
             }
             AddChild(_menuBar);
@@ -35,14 +35,14 @@ namespace Yarn.GodotYarn.Editor {
 
             GodotObject obj = this.GetEditedObject();
 
-            if(obj == null) {
+            if (obj == null) {
                 this._menuBar.Text = nullText;
                 return;
             }
 
             var prop = obj.Get(this.GetEditedProperty()).AsGodotObject();
 
-            if(prop == null) {
+            if (prop == null) {
                 Localization loc = new Localization();
                 this.GetEditedObject().Set(this.GetEditedProperty(), loc);
                 return;
@@ -50,7 +50,7 @@ namespace Yarn.GodotYarn.Editor {
 
             Localization localization = prop as Localization;
 
-            if(localization == null) {
+            if (localization == null) {
                 this._menuBar.Text = nullText;
                 return;
             }

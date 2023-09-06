@@ -118,7 +118,7 @@ namespace Yarn.GodotYarn {
         /// <param name="value">The user-facing text for this string, in the
         /// language specified by <see cref="LocaleCode"/>.</param>
         internal void AddLocalizedStringToAsset(string key, string value) {
-            if(_stringTable.ContainsKey(key) == false) {
+            if (_stringTable.ContainsKey(key) == false) {
                 _stringTable.Add(key, value);
             }
             else {
@@ -156,7 +156,7 @@ namespace Yarn.GodotYarn {
         /// <param name="value">The user-facing text for this string, in the
         /// language specified by <see cref="LocaleCode"/>.</param>
         public void AddLocalizedString(string key, string value) {
-            if(_runtimeStringTable.ContainsKey(key) == false) {
+            if (_runtimeStringTable.ContainsKey(key) == false) {
                 _runtimeStringTable.Add(key, value);
             }
             else {
@@ -216,7 +216,7 @@ namespace Yarn.GodotYarn {
 
         public void AddLocalizedObjects<T>(IEnumerable<KeyValuePair<string, T>> objects) where T : GodotObject {
             foreach (var entry in objects) {
-                if(_assetTable.ContainsKey(entry.Key) == false) {
+                if (_assetTable.ContainsKey(entry.Key) == false) {
                     _assetTable.Add(entry.Key, entry.Value);
                 }
                 else {

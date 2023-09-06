@@ -32,7 +32,7 @@ namespace Yarn.GodotYarn {
             double end = start + fadeTime;
 
             while(Godot.Time.GetUnixTimeFromSystem() < end) {
-                if(stopToken?.IsCancellationRequested ?? false) {
+                if (stopToken?.IsCancellationRequested ?? false) {
                     break;
                 }
 
@@ -50,7 +50,7 @@ namespace Yarn.GodotYarn {
 
             // If our destination alpha is zero, disable interactibility,
             // because the canvas group is now invisible.
-            if(to <= 0) {
+            if (to <= 0) {
                 control.MouseFilter = Control.MouseFilterEnum.Ignore;
             }
             else {
@@ -113,7 +113,7 @@ namespace Yarn.GodotYarn {
             var accumulator = text.GetProcessDeltaTime();
 
             while (text.VisibleCharacters < characterCount) {
-                if(stopToken?.IsCancellationRequested ?? false) {
+                if (stopToken?.IsCancellationRequested ?? false) {
                     text.VisibleCharacters = -1;
                     // GD.Print("[Effects.Typewriter] Interrupt");
                     break;

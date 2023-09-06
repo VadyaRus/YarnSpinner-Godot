@@ -16,20 +16,20 @@ namespace Yarn.GodotYarn.Editor {
         private void AddResource() {
             GodotObject obj = this.GetEditedObject();
 
-            if(obj == null) {
+            if (obj == null) {
                 return;
             }
 
             var prop = obj.Get(this.GetEditedProperty()).AsGodotObjectArray<Resource>();
 
-            if(prop == null) {
+            if (prop == null) {
                 return;
             }
 
             // You can implement your own logic here to add a new resource to the array
             // For demonstration purposes, I'm just adding a placeholder resource
             Resource[] newProp = new Resource[prop.Length];
-            for(int i = 0; i < prop.Length; ++i) {
+            for (int i = 0; i < prop.Length; ++i) {
                 newProp[i] = prop[i];
             }
 
@@ -45,21 +45,21 @@ namespace Yarn.GodotYarn.Editor {
         public override void _UpdateProperty() {
             GodotObject obj = this.GetEditedObject();
 
-            if(obj == null) {
+            if (obj == null) {
                 return;
             }
 
             var prop = obj.Get(this.GetEditedProperty()).AsGodotObjectArray<Resource>();
 
-            if(prop == null) {
+            if (prop == null) {
                 return;
             }
 
-            for(int i = 0; i < _verticalBox.GetChildCount(); ++i) {
+            for (int i = 0; i < _verticalBox.GetChildCount(); ++i) {
                 _verticalBox.GetChild(i).QueueFree();
             }
 
-            for(int i = 0; i < prop.Length; ++i) {
+            for (int i = 0; i < prop.Length; ++i) {
                 GD.Print(prop[i].ResourceName);
 
                 Label button = new Label();

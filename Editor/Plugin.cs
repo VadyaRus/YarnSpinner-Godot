@@ -83,12 +83,12 @@ namespace Yarn.GodotYarn.Editor {
             RemoveCustomType("YarnProject");
             RemoveCustomType("YarnScript");
 
-            if(_yarnImporterPlugin != null) {
+            if (_yarnImporterPlugin != null) {
                 RemoveImportPlugin(_yarnImporterPlugin);
                 _yarnImporterPlugin = null;
             }
 
-            if(_yarnProjectInspector != null) {
+            if (_yarnProjectInspector != null) {
                 RemoveInspectorPlugin(_yarnProjectInspector);
                 _yarnProjectInspector = null;
             }

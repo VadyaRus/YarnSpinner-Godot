@@ -76,6 +76,6 @@ namespace Yarn.GodotYarn {
         /// Called by Godot when the <see cref="LineProviderBehaviour"/>
         /// has first appeared in the scene.
         /// </summary>
-        public override void _Ready() {}
+        public override void _Ready() { }
     }
 }

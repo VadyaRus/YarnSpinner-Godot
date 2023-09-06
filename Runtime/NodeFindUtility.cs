@@ -9,19 +9,19 @@ namespace Yarn.GodotYarn {
         }
 
         public static T Find<T>() where T : Node {
-            if(_instance == null) return null;
+            if (_instance == null) return null;
 
             return Find<T>(_instance.GetTree().Root, true);
         }
 
         public static Node Find(System.Type type) {
-            if(_instance == null) return null;
+            if (_instance == null) return null;
 
             return Find(_instance.GetTree().Root, type, true);
         }
 
         public static Node Find(string name) {
-            if(_instance == null) return null;
+            if (_instance == null) return null;
 
             return Find(_instance.GetTree().Root, name, true);
         }
@@ -29,14 +29,14 @@ namespace Yarn.GodotYarn {
         // Recursive function to find a node of the specified type
         private static Node Find(Node parent, System.Type targetType, bool includeInternal = false) {
             // Check if the current node has the desired type
-            if(parent.GetType() == targetType) {
+            if (parent.GetType() == targetType) {
                 return parent;
             }
 
             // Iterate through the child nodes recursively
-            for(int i = 0; i < parent.GetChildCount(includeInternal); ++i) {
+            for (int i = 0; i < parent.GetChildCount(includeInternal); ++i) {
                 Node foundNode = Find(parent.GetChild(i, includeInternal), targetType, includeInternal);
-                if(foundNode != null) {
+                if (foundNode != null) {
                     return foundNode;
                 }
             }
@@ -48,17 +48,17 @@ namespace Yarn.GodotYarn {
         private static T Find<T>(Node parent, bool includeInternal = false) where T : Node {
             // Check if the current node has the desired type
             T node = parent as T;
-            if(node != null) {
+            if (node != null) {
                 return node;
             }
 
             // Iterate through the child nodes recursively
-            for(int i = 0; i < parent.GetChildCount(includeInternal); ++i) {
+            for (int i = 0; i < parent.GetChildCount(includeInternal); ++i) {
                 Node child = parent.GetChild(i, includeInternal);
 
                 node = Find<T>(child, includeInternal);
 
-                if(node != null) {
+                if (node != null) {
                     return node;
                 }
             }

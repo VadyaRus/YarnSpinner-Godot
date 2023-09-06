@@ -18,9 +18,9 @@ namespace Yarn.GodotYarn {
 
             string content = "";
             foreach (var s in project.SourceScripts) {
-                if(s == null) continue;
+                if (s == null) continue;
 
-                if(FileAccess.FileExists(s) == false) {
+                if (FileAccess.FileExists(s) == false) {
                     continue;
                 }
 
@@ -29,7 +29,7 @@ namespace Yarn.GodotYarn {
                 }
             }
 
-            if(string.IsNullOrEmpty(content)) {
+            if (string.IsNullOrEmpty(content)) {
                 return Error.CompilationFailed;
             }
 
@@ -83,7 +83,7 @@ namespace Yarn.GodotYarn {
                 project.compiledYarnProgram = memoryStream.ToArray();
             }
 
-            if(project.localizations.Contains(project.baseLocalization) == false) {
+            if (project.localizations.Contains(project.baseLocalization) == false) {
                 project.localizations.Add(project.baseLocalization);
             }
 

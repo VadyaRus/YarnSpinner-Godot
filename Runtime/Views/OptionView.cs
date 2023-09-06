@@ -22,7 +22,7 @@ namespace Yarn.GodotYarn {
 
                 // When we're given an Option, use its text and update our
                 // interactibility.
-                if(showCharacterName) {
+                if (showCharacterName) {
                     this.Text = value.Line.Text.Text;
                 }
                 else {
@@ -37,7 +37,7 @@ namespace Yarn.GodotYarn {
             // We only want to invoke this once, because it's an error to
             // submit an option when the Dialogue Runner isn't expecting it. To
             // prevent this, we'll only invoke this if the flag hasn't been cleared already.
-            if(hasSubmittedOptionSelection == false) {
+            if (hasSubmittedOptionSelection == false) {
                 OnOptionSelected.Invoke(Option);
                 hasSubmittedOptionSelection = true;
             }

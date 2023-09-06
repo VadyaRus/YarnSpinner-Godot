@@ -263,7 +263,7 @@ namespace Yarn.GodotYarn {
             }
 
             // All of our text should now be visible.
-            if(cancellationToken != null) {
+            if (cancellationToken != null) {
                 cancellationToken.Dispose();
             }
             cancellationToken = null;
@@ -318,7 +318,7 @@ namespace Yarn.GodotYarn {
             // animation coroutine is what actually interrupts
             // for now this is fine.
             // Is an animation running that we can stop?
-            if(cancellationToken != null && cancellationToken.IsCancellationRequested == false) {
+            if (cancellationToken != null && cancellationToken.IsCancellationRequested == false) {
             // Stop the current animation, and skip to the end of whatever
                 // started it.
                 cancellationToken.Cancel();

@@ -183,7 +183,7 @@ namespace Yarn.GodotYarn {
 
             Dialogue.SetProgram(newProject.Program);
 
-            if(lineProvider != null) {
+            if (lineProvider != null) {
                 lineProvider.YarnProject = newProject;
             }
         }
@@ -554,7 +554,7 @@ namespace Yarn.GodotYarn {
             // Try looking in the command handlers first
             dispatchResult = await DispatchCommandToRegisteredHandlers(command, ContinueDialogue);
 
-            if(dispatchResult != CommandDispatchResult.NotFound) {
+            if (dispatchResult != CommandDispatchResult.NotFound) {
                 // We found the command! We don't need to keep looking. (It may
                 // have succeeded or failed; if it failed, it logged something
                 // to the console or otherwise communicated to the developer
@@ -652,15 +652,15 @@ namespace Yarn.GodotYarn {
         void InterruptLine() {
             ActiveDialogueViews.Clear();
 
-            foreach(var dialogueView in dialogueViews) {
-                if(dialogueView == null || dialogueView.Visible == false || dialogueView.CanProcess() == false) {
+            foreach (var dialogueView in dialogueViews) {
+                if (dialogueView == null || dialogueView.Visible == false || dialogueView.CanProcess() == false) {
                     continue;
                 }
 
                 ActiveDialogueViews.Add(dialogueView);
             }
 
-            foreach(var dialogueView in dialogueViews) {
+            foreach (var dialogueView in dialogueViews) {
                 dialogueView.InterruptLine(CurrentLine, ()=> DialogueViewCompletedInterrupt(dialogueView));
             }
         }
@@ -750,7 +750,7 @@ namespace Yarn.GodotYarn {
                 return CommandDispatchResult.Failed;
             }
 
-            if(typeof(Task).IsAssignableFrom(methodInfo.ReturnType)) {
+            if (typeof(Task).IsAssignableFrom(methodInfo.ReturnType)) {
                 // This delegate returns a YieldInstruction of some kind
                 // (e.g. a Coroutine). Run it, and wait for it to finish
                 // before calling onSuccessfulDispatch.
@@ -850,7 +850,7 @@ namespace Yarn.GodotYarn {
         private void DialogueViewCompletedInterrupt(DialogueViewBase dialogueView) {
             ActiveDialogueViews.Remove(dialogueView);
 
-            if(ActiveDialogueViews.Count == 0) {
+            if (ActiveDialogueViews.Count == 0) {
                 DismissLineFromViews(dialogueViews);
             }
         }

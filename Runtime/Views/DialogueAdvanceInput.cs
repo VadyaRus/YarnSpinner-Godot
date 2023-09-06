@@ -92,7 +92,7 @@ namespace Yarn.GodotYarn {
         }
 
         public override void _Process(double delta) {
-            if(dialogueView == null) {
+            if (dialogueView == null) {
                 return;
             }
 
@@ -105,7 +105,7 @@ namespace Yarn.GodotYarn {
                     dialogueView.UserRequestedViewAdvancement();
                 }
             }
-            else if(continueActionType == ContinueActionType.InputAction) {
+            else if (continueActionType == ContinueActionType.InputAction) {
                 // Has the action been pressed this frame?
                 if (Input.IsActionJustPressed(continueActionName)) {
                     // Indicate that we want to skip/continue.
@@ -115,10 +115,10 @@ namespace Yarn.GodotYarn {
         }
 
         private bool IsContinueKeyJustPressed() {
-            if(Input.IsKeyPressed(continueActionKeyCode) == false && _keyState) {
+            if (Input.IsKeyPressed(continueActionKeyCode) == false && _keyState) {
                 _keyState = false;
             }
-            else if(Input.IsKeyPressed(continueActionKeyCode) && _keyState == false) {
+            else if (Input.IsKeyPressed(continueActionKeyCode) && _keyState == false) {
                 _keyState = true;
                 return true;
             }

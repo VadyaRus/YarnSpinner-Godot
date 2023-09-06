@@ -204,7 +204,7 @@ namespace Yarn.GodotYarn {
         /// </remarks>
         public Program Program {
             get {
-                if(cachedProgram == null) {
+                if (cachedProgram == null) {
                     cachedProgram = Program.Parser.ParseFrom(compiledYarnProgram);
                 }
                 return cachedProgram;

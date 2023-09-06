@@ -20,12 +20,12 @@ namespace Yarn.GodotYarn {
         private const BindingFlags AllMembers = AllInstanceMembers | AllStaticMembers;
 
         private static Injector GetDefaultNodeInjector(Type nodeType, string commandName) {
-            if(typeof(Node).IsAssignableFrom(nodeType) == false) {
+            if (typeof(Node).IsAssignableFrom(nodeType) == false) {
                 return null;
             }
             return name => {
                 var node = NodeFindUtility.Find(name);
-                if(node == null) {
+                if (node == null) {
                     GD.PushError($"Can't run command {commandName} on node {name} of type {nodeType.FullName}: " +
                         "a node with that name doesn't exist in the scene.");
                     return null;
@@ -33,7 +33,7 @@ namespace Yarn.GodotYarn {
 
                 var target = Convert.ChangeType(node, nodeType);
 
-                if(target == null) {
+                if (target == null) {
                     GD.PushError($"Can't run command {commandName} on node {name}: " +
                         $"the command is only defined on {nodeType.FullName} nodes, but {name} is not that type of node.");
                     return null;
