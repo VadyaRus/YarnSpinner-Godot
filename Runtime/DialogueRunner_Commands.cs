@@ -1,9 +1,37 @@
-using System;
-using System.Collections;
-using System.Reflection;
-using Godot;
+/*
 
+The MIT License (MIT)
+
+Copyright (c) 2015-2017 Secret Lab Pty. Ltd. and Yarn Spinner contributors.
+
+Permission is hereby granted, free of charge, to any person obtaining a
+copy of this software and associated documentation files (the "Software"),
+to deal in the Software without restriction, including without limitation
+the rights to use, copy, modify, merge, publish, distribute, sublicense,
+and/or sell copies of the Software, and to permit persons to whom the
+Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+DEALINGS IN THE SOFTWARE.
+
+*/
 namespace Yarn.GodotYarn {
+    using System;
+    using System.Collections;
+    using System.Reflection;
+    using Godot;
+
+    /// <summary>
+    /// This class is responsible for the dialogue runner.
+    /// </summary>
     public partial class DialogueRunner : Control {
         /// <summary>
         /// Represents the result of attempting to locate and call a command.
@@ -27,7 +55,6 @@ namespace Yarn.GodotYarn {
             NotFound,
         }
 
-#region CommandsAndFunctions
         /// <summary>
         /// Adds a command handler. Dialogue will pause execution after the
         /// command is called.
@@ -90,21 +117,17 @@ namespace Yarn.GodotYarn {
         /// <inheritdoc cref="AddCommandHandler(string, Delegate)"/>
         public void AddCommandHandler<T1>(string commandName, System.Func<T1, IEnumerator> handler) => AddCommandHandler(commandName, handler);
 
-
         /// <inheritdoc cref="AddCommandHandler(string, Delegate)"/>
         public void AddCommandHandler<T1, T2>(string commandName, System.Func<T1, T2, IEnumerator> handler) => AddCommandHandler(commandName, handler);
 
         /// <inheritdoc cref="AddCommandHandler(string, Delegate)"/>
         public void AddCommandHandler<T1, T2, T3>(string commandName, System.Func<T1, T2, T3, IEnumerator> handler) => AddCommandHandler(commandName, handler);
 
-
         /// <inheritdoc cref="AddCommandHandler(string, Delegate)"/>
         public void AddCommandHandler<T1, T2, T3, T4>(string commandName, System.Func<T1, T2, T3, T4, IEnumerator> handler) => AddCommandHandler(commandName, handler);
 
-
         /// <inheritdoc cref="AddCommandHandler(string, Delegate)"/>
         public void AddCommandHandler<T1, T2, T3, T4, T5>(string commandName, System.Func<T1, T2, T3, T4, T5, IEnumerator> handler) => AddCommandHandler(commandName, handler);
-
 
         /// <inheritdoc cref="AddCommandHandler(string, Delegate)"/>
         public void AddCommandHandler<T1, T2, T3, T4, T5, T6>(string commandName, System.Func<T1, T2, T3, T4, T5, T6, IEnumerator> handler) => AddCommandHandler(commandName, handler);
@@ -112,30 +135,23 @@ namespace Yarn.GodotYarn {
         /// <inheritdoc cref="AddCommandHandler(string, Delegate)"/>
         public void AddCommandHandler(string commandName, System.Action handler) => AddCommandHandler(commandName, handler);
 
-
         /// <inheritdoc cref="AddCommandHandler(string, Delegate)"/>
         public void AddCommandHandler<T1>(string commandName, System.Action<T1> handler) => AddCommandHandler(commandName, handler);
-
 
         /// <inheritdoc cref="AddCommandHandler(string, Delegate)"/>
         public void AddCommandHandler<T1, T2>(string commandName, System.Action<T1, T2> handler) => AddCommandHandler(commandName, handler);
 
-
         /// <inheritdoc cref="AddCommandHandler(string, Delegate)"/>
         public void AddCommandHandler<T1, T2, T3>(string commandName, System.Action<T1, T2, T3> handler) => AddCommandHandler(commandName, handler);
-
 
         /// <inheritdoc cref="AddCommandHandler(string, Delegate)"/>
         public void AddCommandHandler<T1, T2, T3, T4>(string commandName, System.Action<T1, T2, T3, T4> handler) => AddCommandHandler(commandName, handler);
 
-
         /// <inheritdoc cref="AddCommandHandler(string, Delegate)"/>
         public void AddCommandHandler<T1, T2, T3, T4, T5>(string commandName, System.Action<T1, T2, T3, T4, T5> handler) => AddCommandHandler(commandName, handler);
 
-
         /// <inheritdoc cref="AddCommandHandler(string, Delegate)"/>
         public void AddCommandHandler<T1, T2, T3, T4, T5, T6>(string commandName, System.Action<T1, T2, T3, T4, T5, T6> handler) => AddCommandHandler(commandName, handler);
-
 
         /// <summary>
         /// Removes a command handler.
@@ -166,6 +182,7 @@ namespace Yarn.GodotYarn {
         /// &lt;&lt;call myFunction(1, 2)&gt;&gt;
         /// </code>
         /// </remarks>
+        /// <param name="name">The name of the function.</param>
         /// <param name="implementation">The <see cref="Delegate"/> that
         /// should be invoked when this function is called.</param>
         /// <seealso cref="Library"/>
@@ -216,7 +233,5 @@ namespace Yarn.GodotYarn {
         /// <param name="name">The name of the function to remove.</param>
         /// <seealso cref="AddFunction{TResult}(string, Func{TResult})"/>
         public void RemoveFunction(string name) => Dialogue.Library.DeregisterFunction(name);
-#endregion
-
     }
 }

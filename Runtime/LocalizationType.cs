@@ -23,21 +23,20 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 
 */
+
 namespace Yarn.GodotYarn {
-    using System;
-    using Godot;
+    /// <summary>
+    /// The type of localization system.
+    /// </summary>
+    public enum LocalizationType {
+        /// <summary>
+        /// The localization is handled by Yarn Spinner.
+        /// </summary>
+        YarnInternal,
 
-    public enum DeclarationType {
-        STRING, BOOLEAN, NUMBER
-    }
-
-    [Tool/*, GlobalClass*/]
-    public partial class Declaration : Resource {
-        [Export]
-        public string Name { get; set; }
-        [Export]
-        public DeclarationType Type { get; set; }
-        [Export]
-        public string DefaultValue { get; set; }
+        /// <summary>
+        /// The localization is handled by Godot.
+        /// </summary>
+        Godot,
     }
 }

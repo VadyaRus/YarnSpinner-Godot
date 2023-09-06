@@ -1,8 +1,37 @@
-using System.Collections.Generic;
-using CsvHelper;
-using CsvHelper.Configuration;
+/*
+
+The MIT License (MIT)
+
+Copyright (c) 2015-2017 Secret Lab Pty. Ltd. and Yarn Spinner contributors.
+
+Permission is hereby granted, free of charge, to any person obtaining a
+copy of this software and associated documentation files (the "Software"),
+to deal in the Software without restriction, including without limitation
+the rights to use, copy, modify, merge, publish, distribute, sublicense,
+and/or sell copies of the Software, and to permit persons to whom the
+Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+DEALINGS IN THE SOFTWARE.
+
+*/
 
 namespace Yarn.GodotYarn {
+    using System.Collections.Generic;
+    using CsvHelper;
+    using CsvHelper.Configuration;
+
+    /// <summary>
+    /// A single entry in a string table.
+    /// </summary>
     public struct StringTableEntry {
         /// <summary>
         /// The language that the line is written in.
@@ -70,6 +99,7 @@ namespace Yarn.GodotYarn {
         /// A comment used to describe this line to translators.
         /// </summary>
         public string Comment;
+        private static CsvHelper.Configuration.Configuration csvConfiguration;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="StringTableEntry"/>
@@ -87,17 +117,6 @@ namespace Yarn.GodotYarn {
             Language = s.Language;
         }
 
-        private static CsvHelper.Configuration.Configuration CsvConfiguration;
-
-        private static CsvHelper.Configuration.Configuration GetConfiguration() {
-            if (CsvConfiguration == null) {
-                CsvConfiguration = new CsvHelper.Configuration.Configuration(System.Globalization.CultureInfo.InvariantCulture) {
-                    MemberTypes = CsvHelper.Configuration.MemberTypes.Fields,
-                };
-            }
-            return CsvConfiguration;
-        }
-
         /// <summary>
         /// Reads comma-separated value data from <paramref name="sourceText"/>,
         /// and produces a collection of <see cref="StringTableEntry"/> structs.
@@ -110,44 +129,43 @@ namespace Yarn.GodotYarn {
         /// parsing the string.</exception>
         public static IEnumerable<StringTableEntry> ParseFromCSV(string sourceText) {
             try {
-                using (var stringReader = new System.IO.StringReader(sourceText))
-                using (var csv = new CsvReader(stringReader, GetConfiguration())) {
-                    /*
-                    Do the below instead of GetRecords<T> due to
-                    incompatibility with IL2CPP See more:
-                    https://github.com/YarnSpinnerTool/YarnSpinner-Unity/issues/36#issuecomment-691489913
-                    */
-                    var records = new List<StringTableEntry>();
-                    csv.Read();
-                    csv.ReadHeader();
-                    while (csv.Read()) {
-                        // Fetch values; if they can't be found, they'll be
-                        // defaults.
-                        csv.TryGetField<string>("language", out var language);
-                        csv.TryGetField<string>("lock", out var lockString);
-                        csv.TryGetField<string>("comment", out var comment);
-                        csv.TryGetField<string>("id", out var id);
-                        csv.TryGetField<string>("text", out var text);
-                        csv.TryGetField<string>("file", out var file);
-                        csv.TryGetField<string>("node", out var node);
-                        csv.TryGetField<string>("lineNumber", out var lineNumber);
+                using var stringReader = new System.IO.StringReader(sourceText);
+                using var csv = new CsvReader(stringReader, GetConfiguration());
+                /*
+                Do the below instead of GetRecords<T> due to
+                incompatibility with IL2CPP See more:
+                https://github.com/YarnSpinnerTool/YarnSpinner-Unity/issues/36#issuecomment-691489913
+                */
+                var records = new List<StringTableEntry>();
+                csv.Read();
+                csv.ReadHeader();
+                while (csv.Read()) {
+                    // Fetch values; if they can't be found, they'll be
+                    // defaults.
+                    csv.TryGetField<string>("language", out var language);
+                    csv.TryGetField<string>("lock", out var lockString);
+                    csv.TryGetField<string>("comment", out var comment);
+                    csv.TryGetField<string>("id", out var id);
+                    csv.TryGetField<string>("text", out var text);
+                    csv.TryGetField<string>("file", out var file);
+                    csv.TryGetField<string>("node", out var node);
+                    csv.TryGetField<string>("lineNumber", out var lineNumber);
 
-                        var record = new StringTableEntry {
-                            Language = language ?? string.Empty,
-                            ID = id ?? string.Empty,
-                            Text = text ?? string.Empty,
-                            File = file ?? string.Empty,
-                            Node = node ?? string.Empty,
-                            LineNumber = lineNumber ?? string.Empty,
-                            Lock = lockString ?? string.Empty,
-                            Comment = comment ?? string.Empty,
-                        };
+                    var record = new StringTableEntry {
+                        Language = language ?? string.Empty,
+                        ID = id ?? string.Empty,
+                        Text = text ?? string.Empty,
+                        File = file ?? string.Empty,
+                        Node = node ?? string.Empty,
+                        LineNumber = lineNumber ?? string.Empty,
+                        Lock = lockString ?? string.Empty,
+                        Comment = comment ?? string.Empty,
+                    };
 
-                        records.Add(record);
-                    }
-
-                    return records;
+                    records.Add(record);
                 }
+
+                return records;
             }
             catch (CsvHelperException e) {
                 throw new System.ArgumentException($"Error reading CSV file: {e}");
@@ -162,16 +180,16 @@ namespace Yarn.GodotYarn {
         /// generate the spreadsheet from.</param>
         /// <returns>A string containing CSV-formatted data.</returns>
         public static string CreateCSV(IEnumerable<StringTableEntry> entries) {
-            using (var textWriter = new System.IO.StringWriter()) {
-                // Generate the localised .csv file
+            using var textWriter = new System.IO.StringWriter();
 
-                // Use the invariant culture when writing the CSV
-                var csv = new CsvHelper.CsvWriter(
-                    textWriter, // write into this stream
-                    GetConfiguration() // use this configuration
-                    );
+            // Generate the localised .csv file
 
-                var fieldNames = new[] {
+            // Use the invariant culture when writing the CSV
+            var csv = new CsvHelper.CsvWriter(
+                textWriter, // write into this stream
+                GetConfiguration()); // use this configuration
+
+            var fieldNames = new[] {
                     "language",
                     "id",
                     "text",
@@ -182,13 +200,13 @@ namespace Yarn.GodotYarn {
                     "comment",
                 };
 
-                foreach (var field in fieldNames) {
-                    csv.WriteField(field);
-                }
-                csv.NextRecord();
+            foreach (var field in fieldNames) {
+                csv.WriteField(field);
+            }
+            csv.NextRecord();
 
-                foreach (var entry in entries) {
-                    var values = new[] {
+            foreach (var entry in entries) {
+                var values = new[] {
                         entry.Language,
                         entry.ID,
                         entry.Text,
@@ -198,23 +216,23 @@ namespace Yarn.GodotYarn {
                         entry.Lock,
                         entry.Comment,
                     };
-                    foreach (var value in values) {
-                        csv.WriteField(value);
-                    }
-                    csv.NextRecord();
+                foreach (var value in values)
+                {
+                    csv.WriteField(value);
                 }
-
-                return textWriter.ToString();
+                csv.NextRecord();
             }
+
+            return textWriter.ToString();
         }
 
         /// <inheritdoc/>
-        public override string ToString() {
+        public readonly override string ToString() {
             return $"StringTableEntry: lang={Language} id={ID} text=\"{Text}\" file={File} node={Node} line={LineNumber} lock={Lock} comment={Comment}";
         }
 
         /// <inheritdoc/>
-        public override bool Equals(object obj) {
+        public readonly override bool Equals(object obj) {
             return obj is StringTableEntry entry &&
                    Language == entry.Language &&
                    ID == entry.ID &&
@@ -227,7 +245,7 @@ namespace Yarn.GodotYarn {
         }
 
         /// <inheritdoc/>
-        public override int GetHashCode() {
+        public readonly override int GetHashCode() {
             return
                 Language.GetHashCode() ^
                 ID.GetHashCode() ^
@@ -237,6 +255,13 @@ namespace Yarn.GodotYarn {
                 LineNumber.GetHashCode() ^
                 Lock.GetHashCode() ^
                 Comment.GetHashCode();
+        }
+
+        private static CsvHelper.Configuration.Configuration GetConfiguration() {
+            csvConfiguration ??= new CsvHelper.Configuration.Configuration(System.Globalization.CultureInfo.InvariantCulture) {
+                MemberTypes = CsvHelper.Configuration.MemberTypes.Fields,
+            };
+            return csvConfiguration;
         }
     }
 }

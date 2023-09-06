@@ -1,12 +1,40 @@
-using Godot;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Linq;
+/*
 
+The MIT License (MIT)
+
+Copyright (c) 2015-2017 Secret Lab Pty. Ltd. and Yarn Spinner contributors.
+
+Permission is hereby granted, free of charge, to any person obtaining a
+copy of this software and associated documentation files (the "Software"),
+to deal in the Software without restriction, including without limitation
+the rights to use, copy, modify, merge, publish, distribute, sublicense,
+and/or sell copies of the Software, and to permit persons to whom the
+Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+DEALINGS IN THE SOFTWARE.
+
+*/
 namespace Yarn.GodotYarn {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using Godot;
+
+    /// <summary>
+    /// A Godot node that runs Yarn scripts.
+    /// </summary>
     public partial class DialogueRunner : Control {
         /// <summary>
         /// The <see cref="YarnProject"/> asset that should be loaded on
@@ -18,7 +46,8 @@ namespace Yarn.GodotYarn {
         /// <summary>
         /// The variable storage object.
         /// </summary>
-        [Export] VariableStorageBehaviour _variableStorage;
+        [Export]
+        VariableStorageBehaviour _variableStorage;
 
         /// <inheritdoc cref="_variableStorage"/>
         public VariableStorageBehaviour VariableStorage {
@@ -31,7 +60,8 @@ namespace Yarn.GodotYarn {
             }
         }
 
-        [Export] private NodePath[] views = new NodePath[0];
+        [Export]
+        private NodePath[] views = Array.Empty<NodePath>();
 
         /// <summary>
         /// The View classes that will present the dialogue to the user.
@@ -43,7 +73,8 @@ namespace Yarn.GodotYarn {
         /// This value is used to select a node to start from when <see
         /// cref="startAutomatically"/> is called.
         /// </remarks>
-        [Export] public string startNode = Yarn.Dialogue.DefaultStartNodeName;
+        [Export]
+        public string startNode = Yarn.Dialogue.DefaultStartNodeName;
 
         /// <summary>
         /// Whether the DialogueRunner should automatically start running
@@ -52,7 +83,8 @@ namespace Yarn.GodotYarn {
         /// <remarks>
         /// The node specified by <see cref="startNode"/> will be used.
         /// </remarks>
-        [Export] public bool startAutomatically = true;
+        [Export]
+        public bool startAutomatically = true;
 
         /// <summary>
         /// If true, when an option is selected, it's as though it were a
@@ -60,13 +92,15 @@ namespace Yarn.GodotYarn {
         /// </summary>
         public bool runSelectedOptionAsLine;
 
-        [Export] public LineProviderBehaviour lineProvider;
+        [Export]
+        public LineProviderBehaviour lineProvider;
 
         /// <summary>
         /// If true, will print <see cref="GD.Print"/> messages every time it enters a
         /// node, and other frequent events.
         /// </summary>
-        [Export] public bool verboseLogging = true;
+        [Export]
+        public bool verboseLogging = true;
 
         /// <summary>
         /// Gets a value that indicates if the dialogue is actively
@@ -133,7 +167,6 @@ namespace Yarn.GodotYarn {
         /// between the <c>&lt;&lt;</c> and <c>&gt;&gt;</c> markers.
         /// </para>
         /// </remarks>
-        /// <seealso cref="AddCommandHandler(string, Delegate)"/>
         /// <seealso cref="AddCommandHandler(string, Delegate)"/>
         /// <seealso cref="YarnCommandAttribute"/>
         [Signal]
@@ -283,7 +316,7 @@ namespace Yarn.GodotYarn {
 
         private async void ContinueDialogueWhenLinesAvailable() {
             // Wait until lineProvider.LinesAvailable becomes true
-            while(lineProvider.LinesAvailable == false) {
+            while (lineProvider.LinesAvailable == false) {
                 await ToSignal(GetTree(), "process_frame");
             }
 
@@ -341,7 +374,6 @@ namespace Yarn.GodotYarn {
         /// <returns>The collection of tags associated with the node, or
         /// `null` if no node with that name exists.</returns>
         public IEnumerable<string> GetTagsForNode(String nodeName) => Dialogue.GetTagsForNode(nodeName);
-
 
         /// <summary>
         /// Sets the dialogue views and makes sure the callback <see cref="DialogueViewBase.MarkLineComplete"/>

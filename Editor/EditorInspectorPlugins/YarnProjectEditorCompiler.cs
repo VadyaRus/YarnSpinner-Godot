@@ -1,22 +1,55 @@
+/*
+
+The MIT License (MIT)
+
+Copyright (c) 2015-2017 Secret Lab Pty. Ltd. and Yarn Spinner contributors.
+
+Permission is hereby granted, free of charge, to any person obtaining a
+copy of this software and associated documentation files (the "Software"),
+to deal in the Software without restriction, including without limitation
+the rights to use, copy, modify, merge, publish, distribute, sublicense,
+and/or sell copies of the Software, and to permit persons to whom the
+Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+DEALINGS IN THE SOFTWARE.
+
+*/
 #if TOOLS
-using Godot;
-using System.Collections.Generic;
-using Yarn.Compiler;
-using System.Linq;
-using System.IO;
-using System.Text;
-using System.Security.Cryptography;
-
-using FileAccess = Godot.FileAccess;
-
 namespace Yarn.GodotYarn {
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Security.Cryptography;
+    using System.Text;
+    using Godot;
+    using Yarn.Compiler;
+
+    using FileAccess = Godot.FileAccess;
+
+    /// <summary>
+    /// This class is responsible for the Yarn project editor compilation.
+    /// </summary>
     public static class YarnProjectEditorCompiler {
+        /// <summary>
+        /// Compiles the yarn project.
+        /// </summary>
+        /// <param name="project">The project.</param>
+        /// <returns>The error code.</returns>
         public static Error CompileYarnProject(YarnProject project) {
             if (project.SourceScripts == null || project.SourceScripts.Length == 0 || project == null || project.baseLocalization == null) {
                 return Error.InvalidData;
             }
 
-            string content = "";
+            string content = string.Empty;
             foreach (var s in project.SourceScripts) {
                 if (s == null) continue;
 
@@ -24,9 +57,8 @@ namespace Yarn.GodotYarn {
                     continue;
                 }
 
-                using(FileAccess access = FileAccess.Open(s, FileAccess.ModeFlags.Read)) {
-                    content += access.GetAsText();
-                }
+                using FileAccess access = FileAccess.Open(s, FileAccess.ModeFlags.Read);
+                content += access.GetAsText();
             }
 
             if (string.IsNullOrEmpty(content)) {
@@ -39,7 +71,7 @@ namespace Yarn.GodotYarn {
 
             if (project.declarations != null && project.declarations.Length > 0) {
                 var finalDec = new List<Yarn.Compiler.Declaration>();
-                Yarn.Compiler.Declaration v = new Yarn.Compiler.Declaration();
+                Yarn.Compiler.Declaration v = new ();
                 foreach (var dec in project.declarations) {
                     switch (dec.Type) {
                         case DeclarationType.STRING:
@@ -59,10 +91,10 @@ namespace Yarn.GodotYarn {
                 job.VariableDeclarations = finalDec;
             }
 
-            CompilationResult compilationResult = Compiler.Compiler.Compile(job);
+            CompilationResult compilationResult = Compiler.Compile(job);
             var errors = compilationResult.Diagnostics.Where(d => d.Severity == Diagnostic.DiagnosticSeverity.Error);
 
-            if (errors.Count() > 0) {
+            if (errors.Any()) {
                 foreach (var error in errors) {
                     GD.PrintErr(error);
                 }
@@ -114,7 +146,7 @@ namespace Yarn.GodotYarn {
                     });
 
                     // We don't need to add a default localization.
-                    //shouldAddDefaultLocalization = false;
+                    // shouldAddDefaultLocalization = false;
                 }
                 else {
                     try {
@@ -133,7 +165,7 @@ namespace Yarn.GodotYarn {
                             });
 
                             string target = string.Empty;
-                            using(FileAccess access = FileAccess.Open(project.ResourcePath, FileAccess.ModeFlags.Read)) {
+                            using (FileAccess access = FileAccess.Open(project.ResourcePath, FileAccess.ModeFlags.Read)) {
                                 target = access.GetPathAbsolute();
                             }
                             GD.Print(target);
@@ -143,21 +175,20 @@ namespace Yarn.GodotYarn {
                             GD.Print(target);
 
                             GD.Print("Generate " + target);
-                            using (var writer = new StreamWriter(target)) {
-                                writer.WriteLine("language,id,text,file,node,lineNumber,lock,comment");
-                                foreach (var item in temp) {
-                                    writer.WriteLine($"{lang.LocaleCode},{item.ID},{item.Text},{item.File},{item.Node},{item.LineNumber},{item.Lock},");
-                                }
-
-                                lang.StringFile = target;
+                            using var writer = new StreamWriter(target);
+                            writer.WriteLine("language,id,text,file,node,lineNumber,lock,comment");
+                            foreach (var item in temp) {
+                                writer.WriteLine($"{lang.LocaleCode},{item.ID},{item.Text},{item.File},{item.Node},{item.LineNumber},{item.Lock},");
                             }
-    #else
+
+                            lang.StringFile = target;
+#else
                             GD.PushWarning($"Not creating a localization for {lang.LocaleCode} in the Yarn Project {project.ResourceName} because a text asset containing the strings wasn't found. Add a .csv file containing the translated lines to the Yarn Project's inspector.");
                             continue;
-    #endif
+#endif
                         }
 
-                        using(FileAccess access = FileAccess.Open(lang.StringFile, FileAccess.ModeFlags.Read)) {
+                        using (FileAccess access = FileAccess.Open(lang.StringFile, FileAccess.ModeFlags.Read)) {
                             string source = access.GetAsText();
                             stringTable = StringTableEntry.ParseFromCSV(source);
                         }
@@ -167,7 +198,6 @@ namespace Yarn.GodotYarn {
                         continue;
                     }
                 }
-
 
                 if (lang.LocaleCode == project.baseLocalization.LocaleCode) {
                     // If this is our default language, set it as such
@@ -185,13 +215,12 @@ namespace Yarn.GodotYarn {
             return Error.Ok;
         }
 
-
-        private static byte[] GetHash(string inputString) {
-            using (HashAlgorithm algorithm = SHA256.Create()) {
-                return algorithm.ComputeHash(Encoding.UTF8.GetBytes(inputString));
-            }
-        }
-
+        /// <summary>
+        /// Returns a string that represents the hash of the given string.
+        /// </summary>
+        /// <param name="inputString">The string to hash.</param>
+        /// <param name="limitCharacters">The number of characters to return. If -1, returns the entire string.</param>
+        /// <returns>A string representing the hash of the given string.</returns>
         internal static string GetHashString(string inputString, int limitCharacters = -1) {
             var sb = new StringBuilder();
             foreach (byte b in GetHash(inputString)) {
@@ -207,6 +236,11 @@ namespace Yarn.GodotYarn {
                 // limitCharacters is longer than the string)
                 return sb.ToString(0, Mathf.Min(sb.Length, limitCharacters));
             }
+        }
+
+        private static byte[] GetHash(string inputString) {
+            using HashAlgorithm algorithm = SHA256.Create();
+            return algorithm.ComputeHash(Encoding.UTF8.GetBytes(inputString));
         }
     }
 }

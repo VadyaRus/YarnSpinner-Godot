@@ -24,12 +24,11 @@ DEALINGS IN THE SOFTWARE.
 
 */
 
-using Godot;
-using System.Collections;
-using System.Reflection;
-using System;
-
 namespace Yarn.GodotYarn {
+    using System;
+    using System.Collections;
+    using System.Reflection;
+    using Godot;
     public interface IActionRegistration {
         /// <summary>
         /// Adds a command handler. Dialogue will pause execution after the
@@ -70,17 +69,14 @@ namespace Yarn.GodotYarn {
         /// <inheritdoc cref="AddCommandHandler(string, Delegate)"/>
         void AddCommandHandler<T1>(string commandName, System.Func<T1, Coroutine> handler);
 
-
         /// <inheritdoc cref="AddCommandHandler(string, Delegate)"/>
         void AddCommandHandler<T1, T2>(string commandName, System.Func<T1, T2, Coroutine> handler);
 
         /// <inheritdoc cref="AddCommandHandler(string, Delegate)"/>
         void AddCommandHandler<T1, T2, T3>(string commandName, System.Func<T1, T2, T3, Coroutine> handler);
 
-
         /// <inheritdoc cref="AddCommandHandler(string, Delegate)"/>
         void AddCommandHandler<T1, T2, T3, T4>(string commandName, System.Func<T1, T2, T3, T4, Coroutine> handler);
-
 
         /// <inheritdoc cref="AddCommandHandler(string, Delegate)"/>
         void AddCommandHandler<T1, T2, T3, T4, T5>(string commandName, System.Func<T1, T2, T3, T4, T5, Coroutine> handler);
@@ -95,21 +91,17 @@ namespace Yarn.GodotYarn {
         /// <inheritdoc cref="AddCommandHandler(string, Delegate)"/>
         void AddCommandHandler<T1>(string commandName, System.Func<T1, IEnumerator> handler);
 
-
         /// <inheritdoc cref="AddCommandHandler(string, Delegate)"/>
         void AddCommandHandler<T1, T2>(string commandName, System.Func<T1, T2, IEnumerator> handler);
 
         /// <inheritdoc cref="AddCommandHandler(string, Delegate)"/>
         void AddCommandHandler<T1, T2, T3>(string commandName, System.Func<T1, T2, T3, IEnumerator> handler);
 
-
         /// <inheritdoc cref="AddCommandHandler(string, Delegate)"/>
         void AddCommandHandler<T1, T2, T3, T4>(string commandName, System.Func<T1, T2, T3, T4, IEnumerator> handler);
 
-
         /// <inheritdoc cref="AddCommandHandler(string, Delegate)"/>
         void AddCommandHandler<T1, T2, T3, T4, T5>(string commandName, System.Func<T1, T2, T3, T4, T5, IEnumerator> handler);
-
 
         /// <inheritdoc cref="AddCommandHandler(string, Delegate)"/>
         void AddCommandHandler<T1, T2, T3, T4, T5, T6>(string commandName, System.Func<T1, T2, T3, T4, T5, T6, IEnumerator> handler);
@@ -131,7 +123,6 @@ namespace Yarn.GodotYarn {
 
         /// <inheritdoc cref="AddCommandHandler(string, Delegate)"/>
         void AddCommandHandler<T1, T2, T3, T4, T5>(string commandName, System.Action<T1, T2, T3, T4, T5> handler);
-
 
         /// <inheritdoc cref="AddCommandHandler(string, Delegate)"/>
         void AddCommandHandler<T1, T2, T3, T4, T5, T6>(string commandName, System.Action<T1, T2, T3, T4, T5, T6> handler);
@@ -167,7 +158,6 @@ namespace Yarn.GodotYarn {
         /// should be invoked when this function is called.</param>
         /// <seealso cref="Library"/>
         void AddFunction(string name, Delegate implementation);
-
 
         /// <inheritdoc cref="AddFunction(string, Delegate)" />
         /// <typeparam name="TResult">The type of the value that the function should return.</typeparam>

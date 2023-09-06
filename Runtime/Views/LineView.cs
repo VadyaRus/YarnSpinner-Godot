@@ -1,3 +1,28 @@
+/*
+
+The MIT License (MIT)
+
+Copyright (c) 2015-2017 Secret Lab Pty. Ltd. and Yarn Spinner contributors.
+
+Permission is hereby granted, free of charge, to any person obtaining a
+copy of this software and associated documentation files (the "Software"),
+to deal in the Software without restriction, including without limitation
+the rights to use, copy, modify, merge, publish, distribute, sublicense,
+and/or sell copies of the Software, and to permit persons to whom the
+Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+DEALINGS IN THE SOFTWARE.
+
+*/
 using Godot;
 using System;
 using System.Threading;
@@ -14,8 +39,10 @@ namespace Yarn.GodotYarn {
         /// The <see cref="RichTextLabel"/> object that displays the text of
         /// dialogue lines.
         /// </summary>
-        [Export] RichTextLabel _lineText;
-        [Export] bool _autoAdvance;
+        [Export]
+        RichTextLabel _lineText;
+        [Export]
+        bool _autoAdvance;
         /// <summary>
         /// Controls whether the line view should fade in when lines appear, and
         /// fade out when lines disappear.
@@ -31,7 +58,8 @@ namespace Yarn.GodotYarn {
         /// <seealso cref="Control"/>
         /// <seealso cref="fadeInTime"/>
         /// <seealso cref="fadeOutTime"/>
-        [Export] bool _useFadeEffect;
+        [Export]
+        bool _useFadeEffect;
 
         /// <summary>
         /// The time that the fade effect will take to fade lines in.
@@ -82,7 +110,8 @@ namespace Yarn.GodotYarn {
         [Export(PropertyHint.Range, "0, 1, or_greater")]
         internal float _typewriterEffectSpeed = 0f;
 
-        [Signal] public delegate void onCharacterTypedEventHandler();
+        [Signal]
+public delegate void onCharacterTypedEventHandler();
 
         /// <summary>
         /// The game object that represents an on-screen button that the user
@@ -131,7 +160,8 @@ namespace Yarn.GodotYarn {
         /// If the <see cref="LineView"/> receives a line that does not contain
         /// a character name, this object will be left blank.
         /// </remarks>
-        [Export] Label _characterNameText;
+        [Export]
+        Label _characterNameText;
 
        /// <summary>
         /// The current <see cref="LocalizedLine"/> that this line view is
