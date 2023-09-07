@@ -693,7 +693,7 @@ namespace Yarn.GodotYarn {
             }
 
             foreach (var dialogueView in dialogueViews) {
-                dialogueView.InterruptLine(CurrentLine, ()=> DialogueViewCompletedInterrupt(dialogueView));
+                dialogueView.InterruptLine(CurrentLine, () => DialogueViewCompletedInterrupt(dialogueView));
             }
         }
 

@@ -289,7 +289,7 @@ public delegate void onCharacterTypedEventHandler();
                 this.MouseFilter = MouseFilterEnum.Stop;
 
                 cancellationToken = new CancellationTokenSource();
-                await Effects.Typewriter(_lineText, _typewriterEffectSpeed, ()=>EmitSignal("onCharacterTyped"), cancellationToken);
+                await Effects.Typewriter(_lineText, _typewriterEffectSpeed, () =>EmitSignal("onCharacterTyped"), cancellationToken);
             }
 
             // All of our text should now be visible.
